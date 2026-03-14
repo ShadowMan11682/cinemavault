@@ -581,6 +581,134 @@
     #detail-content { padding:0 16px 40px; }
     .section { padding:0 16px 40px; }
   }
+
+  /* ── ANDROID TV D-PAD FOCUS ── */
+  /* Make all interactive elements focusable */
+  .card, .nav-tab, .btn-play, .btn-outline, .tab-btn, .genre-chip,
+  .src-btn, .cast-card, .history-item, .cw-card, #watchlist-btn,
+  #search-btn, #detail-play-btn, #detail-wl-btn, #go-ep-btn,
+  #season-select, #ep-select, .back-btn, #search-input, .see-all {
+    outline: none;
+  }
+  /* Gold focus ring for TV */
+  .card:focus, .nav-tab:focus, .btn-play:focus, .btn-outline:focus,
+  .tab-btn:focus, .genre-chip:focus, .src-btn:focus, .cast-card:focus,
+  .history-item:focus, .cw-card:focus, #watchlist-btn:focus,
+  #search-btn:focus, #detail-play-btn:focus, #detail-wl-btn:focus,
+  #go-ep-btn:focus, #season-select:focus, #ep-select:focus,
+  .back-btn:focus, #search-input:focus, .see-all:focus {
+    outline: 2.5px solid var(--gold) !important;
+    outline-offset: 3px;
+    box-shadow: 0 0 0 4px rgba(201,168,76,0.2);
+  }
+  .card:focus {
+    transform: translateY(-6px) scale(1.04);
+    border-color: var(--gold);
+  }
+  .cast-card:focus .cast-avatar,
+  .cast-card:focus .cast-avatar-placeholder {
+    border-color: var(--gold);
+  }
+  /* TV cursor hide */
+  @media (hover: none) {
+    * { cursor: none !important; }
+  }
+
+  /* ── PROFILE SWITCHER SCREEN ── */
+  #profile-screen {
+    position:fixed;inset:0;z-index:9998;background:#0a0a0b;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;
+  }
+  #profile-screen.hidden{display:none}
+  #profile-title{
+    font-family:'Playfair Display',serif;font-size:32px;font-weight:900;
+    color:var(--text);letter-spacing:2px;
+  }
+  #profile-title span{color:var(--gold)}
+  .profile-grid{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;max-width:600px}
+  .profile-card{
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+    cursor:pointer;transition:transform .2s;
+  }
+  .profile-card:hover{transform:scale(1.08)}
+  .profile-avatar{
+    width:90px;height:90px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:40px;border:3px solid transparent;transition:border-color .2s;
+    position:relative;
+  }
+  .profile-card:hover .profile-avatar,.profile-card.active .profile-avatar{border-color:var(--gold)}
+  .profile-name{font-size:14px;font-weight:500;color:var(--text2)}
+  .profile-add .profile-avatar{background:var(--bg3);border:2px dashed var(--border2);font-size:32px;color:var(--text3)}
+  .profile-add:hover .profile-avatar{border-color:var(--gold);color:var(--gold)}
+  #profile-modal{
+    position:fixed;inset:0;z-index:9999;
+    background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);
+    display:none;align-items:center;justify-content:center;
+  }
+  #profile-modal.open{display:flex}
+  .profile-modal-box{
+    background:var(--bg2);border:1px solid var(--border2);
+    border-radius:16px;padding:32px;width:320px;
+    display:flex;flex-direction:column;gap:16px;
+  }
+  .profile-modal-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--gold)}
+  .profile-modal-box input{
+    background:var(--bg3);border:1px solid var(--border2);border-radius:8px;
+    color:var(--text);font-family:'Outfit',sans-serif;font-size:14px;
+    padding:10px 14px;outline:none;transition:border-color .2s;
+  }
+  .profile-modal-box input:focus{border-color:var(--gold)}
+  .avatar-picker{display:flex;gap:10px;flex-wrap:wrap}
+  .avatar-opt{
+    font-size:28px;width:44px;height:44px;border-radius:8px;
+    background:var(--bg3);border:2px solid transparent;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;transition:all .2s;
+  }
+  .avatar-opt:hover,.avatar-opt.selected{border-color:var(--gold);background:var(--gold-dim)}
+  .pm-btns{display:flex;gap:10px}
+  .pm-btn{
+    flex:1;padding:10px;border-radius:8px;font-family:'Outfit',sans-serif;
+    font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s;
+  }
+  .pm-btn.primary{background:linear-gradient(135deg,var(--crimson),var(--red2));color:#fff}
+  .pm-btn.secondary{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
+  .pm-btn.danger{background:rgba(220,20,60,0.1);color:var(--crimson);border:1px solid rgba(220,20,60,0.3)}
+
+  /* ── ACTIVE PROFILE BADGE in navbar ── */
+  #active-profile-btn{
+    display:flex;align-items:center;gap:8px;
+    padding:5px 12px;border-radius:8px;cursor:pointer;
+    border:1px solid var(--border);background:var(--bg3);
+    font-size:13px;color:var(--text2);transition:all .2s;white-space:nowrap;
+  }
+  #active-profile-btn:hover{border-color:var(--border2);color:var(--text)}
+  #active-profile-avatar{font-size:18px}
+
+  /* ── REACTION BUTTONS ── */
+  .reaction-bar{
+    display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap;
+  }
+  .rxn-btn{
+    padding:7px 16px;border-radius:20px;font-size:13px;font-weight:500;
+    cursor:pointer;border:1px solid var(--border);background:var(--bg3);
+    color:var(--text2);transition:all .2s;display:flex;align-items:center;gap:5px;
+    font-family:'Outfit',sans-serif;
+  }
+  .rxn-btn:hover{border-color:var(--border2);color:var(--text)}
+  .rxn-btn.active-love{border-color:#e74c3c;background:rgba(231,76,60,0.15);color:#e74c3c}
+  .rxn-btn.active-like{border-color:var(--gold);background:var(--gold-dim);color:var(--gold)}
+  .rxn-btn.active-dislike{border-color:#666;background:rgba(100,100,100,0.15);color:#aaa}
+  .rxn-btn.active-nope{border-color:#555;background:rgba(80,80,80,0.1);color:#888}
+
+  /* ── RECOMMENDED PAGE ── */
+  #page-recommended .rec-empty{
+    text-align:center;padding:80px 20px;color:var(--text3);
+  }
+  #page-recommended .rec-empty .rec-icon{font-size:60px;margin-bottom:16px}
+  .rec-reason{font-size:10px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;
+    padding:2px 8px;background:var(--gold-dim);border-radius:3px;margin-top:4px;display:inline-block}
 </style>
 </head>
 <body>
@@ -593,13 +721,36 @@
     <div class="nav-tab" data-page="movies" onclick="switchNav('movies')">Movies</div>
     <div class="nav-tab" data-page="tv" onclick="switchNav('tv')">TV Shows</div>
     <div class="nav-tab" data-page="anime" onclick="switchNav('anime')">Anime</div>
+    <div class="nav-tab" data-page="recommended" onclick="switchNav('recommended')">✦ For You</div>
   </div>
   <div id="search-wrap">
     <input id="search-input" type="text" placeholder="Search movies, shows, actors…" onkeydown="if(event.key==='Enter')doSearch()"/>
     <button id="search-btn" onclick="doSearch()">🔍</button>
   </div>
+  <div id="active-profile-btn" onclick="openProfileScreen()"><span id="active-profile-avatar">👤</span><span id="active-profile-name">Guest</span></div>
   <button id="watchlist-btn" onclick="showPage('watchlist')">♡ Watchlist</button>
 </nav>
+
+
+<!-- PROFILE SWITCHER SCREEN -->
+<div id="profile-screen">
+  <div id="profile-title">Who's <span>Watching?</span></div>
+  <div class="profile-grid" id="profile-grid"></div>
+</div>
+
+<!-- PROFILE CREATE/EDIT MODAL -->
+<div id="profile-modal">
+  <div class="profile-modal-box">
+    <div class="profile-modal-title" id="pm-title">New Profile</div>
+    <div class="avatar-picker" id="avatar-picker"></div>
+    <input id="pm-name-input" type="text" placeholder="Profile name" maxlength="20"/>
+    <div class="pm-btns">
+      <button class="pm-btn secondary" onclick="closeProfileModal()">Cancel</button>
+      <button class="pm-btn danger" id="pm-delete-btn" onclick="deleteProfile()" style="display:none">Delete</button>
+      <button class="pm-btn primary" onclick="saveProfile()">Save</button>
+    </div>
+  </div>
+</div>
 
 <div id="app">
 
@@ -721,6 +872,7 @@
             <div id="detail-tagline"></div>
             <div id="detail-meta"></div>
             <div id="detail-genres"></div>
+            <div id="detail-reactions" class="reaction-bar"></div>
             <div id="detail-actions">
               <button class="btn-play" id="detail-play-btn" onclick="playDetail()">▶ Watch Now</button>
               <button class="btn-outline" id="detail-wl-btn" onclick="toggleDetailWatchlist()">+ Watchlist</button>
@@ -793,6 +945,16 @@
     </div>
   </div>
 
+  <!-- RECOMMENDED PAGE -->
+  <div id="page-recommended" class="page">
+    <div class="section" style="padding-top:24px">
+      <div class="section-header">
+        <div class="section-title">✦ Recommended <span>For You</span></div>
+      </div>
+      <div id="rec-grid" class="cards-grid"></div>
+    </div>
+  </div>
+
   <!-- HISTORY PAGE -->
   <div id="page-history" class="page">
     <div class="section" style="padding-top:24px">
@@ -832,7 +994,21 @@
 
 <script>
 // ── CONFIG ──────────────────────────────────────────────────────────────────
-const TMDB_KEY = 'e7fbcbbd455233814f97af4e517b1cb2'; // Replace with your TMDB API key
+const TMDB_KEY = 'e7fbcbbd455233814f97af4e517b1cb2';
+const OMDB_KEY = '553699e1';
+const OMDB = 'https://www.omdbapi.com';
+const imdbCache = {};
+async function getImdbRating(imdbId) {
+  if(!imdbId) return null;
+  if(imdbCache[imdbId]) return imdbCache[imdbId];
+  try {
+    const r = await fetch(`https://www.omdbapi.com/?i=${imdbId}&apikey=${OMDB_KEY}`);
+    const d = await r.json();
+    const rating = d.imdbRating && d.imdbRating !== 'N/A' ? d.imdbRating : null;
+    imdbCache[imdbId] = rating;
+    return rating;
+  } catch(e) { return null; }
+}
 const TMDB = 'https://api.themoviedb.org/3';
 const IMG = 'https://image.tmdb.org/t/p/';
 
@@ -860,9 +1036,28 @@ let pageHistory = [];
 let activeGenreMovie = null, activeGenreTV = null;
 let tvSeasons = [];
 
-let watchlist = JSON.parse(localStorage.getItem('cv_watchlist')||'[]');
-let history_   = JSON.parse(localStorage.getItem('cv_history')||'[]');
-let cwData     = JSON.parse(localStorage.getItem('cv_cw')||'[]');
+// ── PROFILE SYSTEM ──────────────────────────────────────────────────────────
+const AVATARS = ['🎬','🎭','🎥','🎞️','🍿','👑','🦁','🐉','🌙','⚡','🔥','💎'];
+const DEFAULT_PROFILES = [{id:'p1',name:'Profile 1',avatar:'🎬'}];
+let profiles   = JSON.parse(localStorage.getItem('cv_profiles')||JSON.stringify(DEFAULT_PROFILES));
+let activeProfileId = localStorage.getItem('cv_active_profile') || profiles[0]?.id || 'p1';
+let editingProfileId = null;
+
+function pKey(key){ return `cv_${activeProfileId}_${key}`; }
+function pGet(key, def){ return JSON.parse(localStorage.getItem(pKey(key))||JSON.stringify(def)); }
+function pSet(key, val){ localStorage.setItem(pKey(key), JSON.stringify(val)); }
+
+function getActiveProfile(){ return profiles.find(p=>p.id===activeProfileId)||profiles[0]; }
+
+// Per-profile data accessors
+function getWatchlist(){ return pGet('watchlist',[]); }
+function getHistory(){   return pGet('history',[]); }
+function getReactions(){ return pGet('reactions',{}); }
+function setReactions(v){ pSet('reactions',v); }
+
+let watchlist = getWatchlist();
+let history_  = getHistory();
+let cwData    = [];
 
 // Trivia bank (fun facts shown when API has none)
 const TRIVIA_BANK = [
@@ -904,6 +1099,14 @@ function imgUrl(path, size='w500') {
 
 // ── INIT ─────────────────────────────────────────────────────────────────────
 window.onload = async () => {
+  updateNavProfile();
+  // Show profile screen on first load
+  if(!localStorage.getItem('cv_active_profile')) {
+    renderProfileScreen();
+  } else {
+    document.getElementById('profile-screen').classList.add('hidden');
+  }
+
   loadContinueWatching();
   await Promise.all([
     loadHero(),
@@ -937,7 +1140,7 @@ function renderHero(i) {
   if(!m) return;
   document.getElementById('hero-bg').style.backgroundImage = m.backdrop_path ? `url(${imgUrl(m.backdrop_path,'original')})` : 'none';
   document.getElementById('hero-title').textContent = m.title||m.name||'–';
-  document.getElementById('hero-rating').textContent = `⭐ ${m.vote_average?.toFixed(1)||'–'}`;
+  document.getElementById('hero-rating').innerHTML = `<img src='https://upload.wikimedia.org/wikipedia/commons/6/69/IMDB_Logo_2016.svg' style='height:13px;vertical-align:middle;margin-right:4px;opacity:0.9'/> ${m.vote_average?.toFixed(1)||'–'}`;
   document.getElementById('hero-year').textContent = (m.release_date||m.first_air_date||'').slice(0,4)||'–';
   document.getElementById('hero-overview').textContent = m.overview||'';
   document.querySelectorAll('.hero-dot').forEach((d,j)=>d.classList.toggle('active',j===i));
@@ -1063,7 +1266,7 @@ function cardHTML(m, type) {
       <div class="card-title">${title}</div>
       <div class="card-meta">
         ${year?`<span>${year}</span>`:''}
-        <span class="card-rating">⭐ ${rating}</span>
+        <span class="card-rating" style="display:inline-flex;align-items:center;gap:3px"><img src="https://upload.wikimedia.org/wikipedia/commons/6/69/IMDB_Logo_2016.svg" style="height:10px;opacity:0.85"/> ${rating}</span>
       </div>
     </div>
   </div>`;
@@ -1085,11 +1288,12 @@ async function openDetail(id, type) {
 
   try {
     const endpoint = type==='movie' ? `/movie/${id}` : `/tv/${id}`;
-    const [detail, credits, videos, keywords] = await Promise.all([
-      api(endpoint, {append_to_response:'external_ids'}),
+    const [detail, credits, videos, keywords, externalIds] = await Promise.all([
+      api(endpoint),
       api(`${endpoint}/credits`),
       api(`${endpoint}/videos`),
-      api(`${endpoint}/keywords`).catch(()=>({keywords:[],results:[]}))
+      api(`${endpoint}/keywords`).catch(()=>({keywords:[],results:[]})),
+      api(`${endpoint}/external_ids`).catch(()=>({}))
     ]);
 
     currentDetail = {...detail, media_type: type};
@@ -1117,17 +1321,25 @@ async function openDetail(id, type) {
     const runtime = detail.runtime ? `${Math.floor(detail.runtime/60)}h ${detail.runtime%60}m` :
                     (detail.episode_run_time?.[0] ? `~${detail.episode_run_time[0]}m/ep` : '');
     const year = (detail.release_date||detail.first_air_date||'').slice(0,4);
-    const rating = detail.vote_average?.toFixed(1)||'–';
+    const tmdbRating = detail.vote_average?.toFixed(1)||'–';
     const votes = detail.vote_count ? `(${detail.vote_count.toLocaleString()} votes)` : '';
-    document.getElementById('detail-meta').innerHTML =
-      `<span class="meta-pill gold">⭐ ${rating} ${votes}</span>
-       ${year?`<span class="meta-pill">${year}</span>`:''}
-       ${runtime?`<span class="meta-pill">${runtime}</span>`:''}
-       ${detail.status?`<span class="meta-pill">${detail.status}</span>`:''}`;
+    const imdbId = detail.imdb_id || externalIds?.imdb_id || null;
+    function setMeta(ratingStr) {
+      document.getElementById('detail-meta').innerHTML =
+        `<span class="meta-pill gold" style="display:inline-flex;align-items:center;gap:5px"><img src="https://upload.wikimedia.org/wikipedia/commons/6/69/IMDB_Logo_2016.svg" style="height:13px;opacity:0.9"/> ${ratingStr}/10 ${votes}</span>
+         ${year?`<span class="meta-pill">${year}</span>`:''}
+         ${runtime?`<span class="meta-pill">${runtime}</span>`:''}
+         ${detail.status?`<span class="meta-pill">${detail.status}</span>`:''}`;
+    }
+    setMeta(tmdbRating);
+    if(imdbId) { getImdbRating(imdbId).then(r => { if(r) setMeta(r); }); }
 
     // genres
     document.getElementById('detail-genres').innerHTML =
       (detail.genres||[]).map(g=>`<span class="genre-tag">${g.name}</span>`).join('');
+
+    // reaction bar
+    renderReactionBar(id, type);
 
     // watchlist btn
     const inWl = watchlist.some(w=>w.id===id);
@@ -1149,12 +1361,50 @@ async function openDetail(id, type) {
       `<div class="fact-card"><div class="fact-label">${f.label}</div><div class="fact-value">${f.value}</div></div>`
     ).join('');
 
-    // trailer
+    // trailer — youtube-nocookie bypasses Error 153 embed restrictions
     const trailer = videos.results?.find(v=>v.type==='Trailer'&&v.site==='YouTube') ||
                     videos.results?.find(v=>v.site==='YouTube');
     if(trailer) {
+      const key = trailer.key;
+      const thumb = `https://img.youtube.com/vi/${key}/maxresdefault.jpg`;
+      const ytUrl = `https://www.youtube.com/watch?v=${key}`;
+      // Try nocookie embed first; if it fires the error message, swap to thumbnail
       document.getElementById('trailer-container').innerHTML =
-        `<iframe src="https://www.youtube.com/embed/${trailer.key}?autoplay=0&rel=0" allowfullscreen></iframe>`;
+        `<div style="position:relative;width:100%;aspect-ratio:16/9">
+          <iframe id="yt-frame" src="https://www.youtube-nocookie.com/embed/${key}?autoplay=0&rel=0&modestbranding=1"
+            style="width:100%;height:100%;border:none;display:block"
+            allowfullscreen allow="autoplay;fullscreen;encrypted-media"></iframe>
+          <div id="yt-fallback" style="display:none;position:absolute;inset:0;cursor:pointer;background:#0a0a0b" onclick="window.open('${ytUrl}','_blank')">
+            <img src="${thumb}" style="width:100%;height:100%;object-fit:cover;opacity:0.7" onerror="this.src='https://img.youtube.com/vi/${key}/hqdefault.jpg'"/>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px">
+              <div style="width:68px;height:68px;border-radius:50%;background:rgba(255,0,0,0.92);display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 24px rgba(255,0,0,0.5)">▶</div>
+              <div style="font-family:'Outfit',sans-serif;font-size:13px;color:rgba(255,255,255,0.8);letter-spacing:1px">Watch on YouTube</div>
+            </div>
+          </div>
+        </div>`;
+      // Listen for YouTube's error message via postMessage
+      window.addEventListener('message', function ytMsg(e) {
+        try {
+          const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+          if(data && (data.event === 'onError' || (data.info && (data.info === 150 || data.info === 153 || data.info === 101)))) {
+            const fb = document.getElementById('yt-fallback');
+            const fr = document.getElementById('yt-frame');
+            if(fb && fr) { fr.style.display='none'; fb.style.display='block'; }
+            window.removeEventListener('message', ytMsg);
+          }
+        } catch(err) {}
+      });
+      // Also check after 3s — if iframe is blank/errored it won't send a message
+      setTimeout(function() {
+        const fr = document.getElementById('yt-frame');
+        const fb = document.getElementById('yt-fallback');
+        if(!fr || !fb) return;
+        try {
+          // If contentDocument is inaccessible (cross-origin blocked) that's fine — it loaded
+          // If src is still the embed URL but height is 0, it failed silently
+          if(fr.offsetHeight < 10) { fr.style.display='none'; fb.style.display='block'; }
+        } catch(e) { fr.style.display='none'; fb.style.display='block'; }
+      }, 3500);
     } else {
       document.getElementById('trailer-container').innerHTML = '<div class="no-trailer">No trailer available</div>';
     }
@@ -1298,6 +1548,9 @@ function setSource(i) {
   setPlayerSrc();
 }
 
+// Detect Android WebView (Kodular)
+const isAndroid = typeof Android !== 'undefined' || /wv/.test(navigator.userAgent) || (navigator.userAgent.includes('Android') && navigator.userAgent.includes('Version/'));
+
 function setPlayerSrc() {
   const modal = document.getElementById('player-modal');
   const {_id, _type, _s, _e, _srcIdx} = modal;
@@ -1305,7 +1558,44 @@ function setPlayerSrc() {
   const src = _type==='tv'
     ? sources[_srcIdx].url(_id, _s, _e)
     : sources[_srcIdx].url(_id);
-  document.getElementById('player-iframe').src = src;
+
+  if(isAndroid) {
+    // On Android: try to open in Bear Player via intent, fallback to system chooser
+    launchInPlayer(src);
+  } else {
+    // On browser: use iframe as normal
+    document.getElementById('player-iframe').src = src;
+  }
+}
+
+function launchInPlayer(url) {
+  // Show a launch overlay inside the player modal instead of blank iframe
+  const wrap = document.getElementById('player-frame-wrap');
+  wrap.innerHTML = `
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;background:#0a0a0b">
+      <div style="font-size:48px">▶</div>
+      <div style="font-family:'Outfit',sans-serif;font-size:16px;color:#c9a84c;font-weight:500">Ready to play</div>
+      <div style="font-family:'Outfit',sans-serif;font-size:12px;color:#5a5548;text-align:center;max-width:280px">Tap the button below to open in Bear Player or your preferred video app</div>
+      <button onclick="openInBearPlayer('${url.replace(/'/g,"\'")}'')" style="padding:14px 32px;background:linear-gradient(135deg,#dc143c,#8b1a1a);border:none;border-radius:8px;color:#fff;font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;cursor:pointer;letter-spacing:0.5px;box-shadow:0 4px 20px rgba(220,20,60,0.4)">▶ Open in Bear Player</button>
+      <button onclick="openInBrowser('${url.replace(/'/g,"\'")}'')" style="padding:10px 24px;background:transparent;border:1px solid rgba(201,168,76,0.3);border-radius:8px;color:rgba(201,168,76,0.7);font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer">Open in Browser</button>
+      <div style="font-family:'Outfit',sans-serif;font-size:10px;color:#3a3832;margin-top:8px">Source: ${url}</div>
+    </div>`;
+}
+
+function openInBearPlayer(url) {
+  // Intent URL — tries Bear Player first, falls back to system video chooser
+  const bearPackage = 'com.fantastical.bear_player';
+  const intentUrl = `intent:${url}#Intent;package=${bearPackage};type=video/*;S.browser_fallback_url=${encodeURIComponent(url)};end`;
+  try {
+    window.location.href = intentUrl;
+  } catch(e) {
+    // fallback: system chooser
+    window.location.href = `intent:${url}#Intent;type=video/*;end`;
+  }
+}
+
+function openInBrowser(url) {
+  window.open(url, '_blank');
 }
 
 async function loadSeasons() {
@@ -1333,7 +1623,8 @@ function loadEpisode() {
 
 function closePlayer() {
   document.getElementById('player-modal').classList.remove('open');
-  document.getElementById('player-iframe').src='about:blank';
+  const wrap = document.getElementById('player-frame-wrap');
+  wrap.innerHTML = '<iframe id="player-iframe" allowfullscreen allow="autoplay; fullscreen"></iframe>';
 }
 
 function playDetail() {
@@ -1355,7 +1646,7 @@ function toggleWatchlist(item, btnEl) {
     showToast('Added to Watchlist ♥');
     if(btnEl){ btnEl.textContent='♥'; btnEl.classList.add('in-wl'); }
   }
-  localStorage.setItem('cv_watchlist', JSON.stringify(watchlist));
+  pSet('watchlist', watchlist);
   if(document.getElementById('page-watchlist').classList.contains('active')) renderWatchlist();
 }
 
@@ -1395,7 +1686,7 @@ function addHistory(detail) {
   history_ = history_.filter(h=>h.id!==item.id);
   history_.unshift(item);
   history_ = history_.slice(0,50);
-  localStorage.setItem('cv_history', JSON.stringify(history_));
+  pSet('history', history_);
   loadContinueWatching();
 }
 
@@ -1418,7 +1709,7 @@ function renderHistory() {
 
 function clearHistory() {
   history_ = [];
-  localStorage.setItem('cv_history','[]');
+  pSet('history',[]);
   renderHistory();
   cwData = [];
   localStorage.setItem('cv_cw','[]');
@@ -1495,6 +1786,7 @@ function showPage(name) {
   document.getElementById(`page-${name}`)?.classList.add('active');
   if(name==='watchlist') renderWatchlist();
   if(name==='history') renderHistory();
+  if(name==='recommended') loadRecommended();
 }
 
 function switchNav(name) {
@@ -1503,6 +1795,7 @@ function switchNav(name) {
   if(name==='movies') loadMoviePage(activeGenreMovie);
   if(name==='tv') loadTVPage(activeGenreTV);
   if(name==='anime') loadAnime();
+  if(name==='recommended') loadRecommended();
 }
 
 function goBack() {
@@ -1548,6 +1841,238 @@ function showToast(msg) {
   toastTimer = setTimeout(()=>el.classList.remove('show'), 2500);
 }
 
+
+// ══════════════════════════════════════════════════════
+// PROFILE SYSTEM
+// ══════════════════════════════════════════════════════
+function renderProfileScreen() {
+  const grid = document.getElementById('profile-grid');
+  grid.innerHTML = '';
+  profiles.forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'profile-card' + (p.id===activeProfileId?' active':'');
+    div.innerHTML = `<div class="profile-avatar" style="background:var(--bg3)">${p.avatar}</div><div class="profile-name">${p.name}</div>`;
+    div.onclick = () => selectProfile(p.id);
+    div.oncontextmenu = (e) => { e.preventDefault(); openEditProfile(p.id); };
+    grid.appendChild(div);
+  });
+  // Add new profile button (max 5)
+  if(profiles.length < 5) {
+    const add = document.createElement('div');
+    add.className = 'profile-card profile-add';
+    add.innerHTML = `<div class="profile-avatar">+</div><div class="profile-name">Add Profile</div>`;
+    add.onclick = () => openNewProfile();
+    grid.appendChild(add);
+  }
+}
+
+function openProfileScreen() {
+  renderProfileScreen();
+  document.getElementById('profile-screen').classList.remove('hidden');
+}
+
+function selectProfile(id) {
+  activeProfileId = id;
+  localStorage.setItem('cv_active_profile', id);
+  watchlist = getWatchlist();
+  history_  = getHistory();
+  document.getElementById('profile-screen').classList.add('hidden');
+  updateNavProfile();
+  loadContinueWatching();
+  showToast('Switched to ' + getActiveProfile().name);
+  // refresh current page data
+  loadTrending();
+}
+
+function updateNavProfile() {
+  const p = getActiveProfile();
+  document.getElementById('active-profile-avatar').textContent = p.avatar;
+  document.getElementById('active-profile-name').textContent   = p.name;
+}
+
+// Profile modal
+function openNewProfile() {
+  editingProfileId = null;
+  document.getElementById('pm-title').textContent = 'New Profile';
+  document.getElementById('pm-name-input').value  = '';
+  document.getElementById('pm-delete-btn').style.display = 'none';
+  renderAvatarPicker(AVATARS[0]);
+  document.getElementById('profile-modal').classList.add('open');
+}
+
+function openEditProfile(id) {
+  editingProfileId = id;
+  const p = profiles.find(x=>x.id===id);
+  document.getElementById('pm-title').textContent = 'Edit Profile';
+  document.getElementById('pm-name-input').value  = p.name;
+  document.getElementById('pm-delete-btn').style.display = profiles.length>1 ? 'block':'none';
+  renderAvatarPicker(p.avatar);
+  document.getElementById('profile-modal').classList.add('open');
+}
+
+function renderAvatarPicker(selected) {
+  const el = document.getElementById('avatar-picker');
+  el.innerHTML = AVATARS.map(a =>
+    `<div class="avatar-opt${a===selected?' selected':''}" onclick="selectAvatar('${a}')">${a}</div>`
+  ).join('');
+}
+
+function selectAvatar(a) {
+  document.querySelectorAll('.avatar-opt').forEach(el => el.classList.toggle('selected', el.textContent===a));
+}
+
+function getSelectedAvatar() {
+  return document.querySelector('.avatar-opt.selected')?.textContent || AVATARS[0];
+}
+
+function saveProfile() {
+  const name = document.getElementById('pm-name-input').value.trim() || 'Profile';
+  const avatar = getSelectedAvatar();
+  if(editingProfileId) {
+    profiles = profiles.map(p => p.id===editingProfileId ? {...p,name,avatar} : p);
+  } else {
+    profiles.push({id:'p'+Date.now(), name, avatar});
+  }
+  localStorage.setItem('cv_profiles', JSON.stringify(profiles));
+  closeProfileModal();
+  renderProfileScreen();
+  updateNavProfile();
+  showToast('Profile saved');
+}
+
+function deleteProfile() {
+  if(profiles.length<=1) return;
+  profiles = profiles.filter(p=>p.id!==editingProfileId);
+  if(activeProfileId===editingProfileId) activeProfileId = profiles[0].id;
+  localStorage.setItem('cv_profiles', JSON.stringify(profiles));
+  localStorage.setItem('cv_active_profile', activeProfileId);
+  closeProfileModal();
+  renderProfileScreen();
+  updateNavProfile();
+  showToast('Profile deleted');
+}
+
+function closeProfileModal() {
+  document.getElementById('profile-modal').classList.remove('open');
+}
+
+// ══════════════════════════════════════════════════════
+// REACTION SYSTEM
+// ══════════════════════════════════════════════════════
+const REACTIONS = [
+  {key:'love',  label:'❤️ Love This', cls:'active-love'},
+  {key:'like',  label:'👍 Like',       cls:'active-like'},
+  {key:'dislike',label:'👎 Dislike',   cls:'active-dislike'},
+  {key:'nope',  label:'🚫 Not Interested', cls:'active-nope'},
+];
+
+function renderReactionBar(id, type) {
+  const reactions = getReactions();
+  const current   = reactions[id]?.reaction || null;
+  const bar = document.getElementById('detail-reactions');
+  if(!bar) return;
+  bar.innerHTML = REACTIONS.map(r =>
+    `<button class="rxn-btn ${current===r.key ? r.cls : ''}" onclick="setReaction(${id},'${type}','${r.key}')">${r.label}</button>`
+  ).join('');
+}
+
+function setReaction(id, type, key) {
+  const reactions = getReactions();
+  const current   = reactions[id]?.reaction;
+  // toggle off if same
+  if(current === key) {
+    delete reactions[id];
+  } else {
+    reactions[id] = {
+      reaction: key,
+      type,
+      genres:   currentDetail?.genres?.map(g=>g.id) || [],
+      year:     parseInt((currentDetail?.release_date||currentDetail?.first_air_date||'0').slice(0,4))||0,
+      title:    currentDetail?.title||currentDetail?.name||'',
+      poster:   currentDetail?.poster_path||'',
+      vote:     currentDetail?.vote_average||0,
+    };
+  }
+  setReactions(reactions);
+  renderReactionBar(id, type);
+  const labels = {love:'❤️ Loved it!', like:'👍 Liked!', dislike:'👎 Noted', nope:'🚫 Hidden from recs'};
+  if(reactions[id]) showToast(labels[key]);
+}
+
+// ══════════════════════════════════════════════════════
+// RECOMMENDATION ENGINE
+// ══════════════════════════════════════════════════════
+async function loadRecommended() {
+  const el = document.getElementById('rec-grid');
+  el.innerHTML = '<div class="spinner"></div>';
+  const reactions = getReactions();
+  const liked = Object.values(reactions).filter(r=>r.reaction==='love'||r.reaction==='like');
+
+  if(liked.length === 0) {
+    el.innerHTML = `<div class="rec-empty" style="grid-column:1/-1">
+      <div class="rec-icon">✦</div>
+      <p style="color:var(--text2);font-size:15px">Like or Love titles to get personalised recommendations.</p>
+      <p style="color:var(--text3);font-size:12px;margin-top:8px">The more you rate, the smarter this gets.</p>
+    </div>`;
+    return;
+  }
+
+  // Build preference profile
+  const genreScore = {}, decadeScore = {};
+  liked.forEach(r => {
+    (r.genres||[]).forEach(gid => { genreScore[gid] = (genreScore[gid]||0) + (r.reaction==='love'?2:1); });
+    const decade = Math.floor((r.year||0)/10)*10;
+    if(decade>0) decadeScore[decade] = (decadeScore[decade]||0) + 1;
+  });
+  const topGenres = Object.entries(genreScore).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]);
+  const topDecade = Object.entries(decadeScore).sort((a,b)=>b[1]-a[1])[0]?.[0];
+
+  // Disliked/noped IDs to exclude
+  const excluded = new Set(
+    Object.entries(reactions).filter(([,v])=>v.reaction==='dislike'||v.reaction==='nope').map(([k])=>parseInt(k))
+  );
+
+  try {
+    // Fetch from top genres
+    const fetches = topGenres.slice(0,2).map(gid =>
+      api('/discover/movie',{with_genres:gid, sort_by:'vote_average.desc', 'vote_count.gte':200,
+        ...(topDecade ? {'primary_release_date.gte':topDecade+'-01-01','primary_release_date.lte':(parseInt(topDecade)+19)+'-12-31'} : {})
+      })
+    );
+    // Also fetch TV
+    if(topGenres[0]) fetches.push(api('/discover/tv',{with_genres:topGenres[0],sort_by:'vote_average.desc','vote_count.gte':100}));
+
+    const results = await Promise.all(fetches);
+    let items = results.flatMap(r=>r.results||[])
+      .filter(m => !excluded.has(m.id))
+      .filter(m => !(reactions[m.id])) // not already reacted to
+      .sort((a,b) => (b.vote_average||0)-(a.vote_average||0));
+
+    // Deduplicate
+    const seen = new Set();
+    items = items.filter(m => { if(seen.has(m.id)) return false; seen.add(m.id); return true; });
+    items = items.slice(0, 40);
+
+    if(!items.length) {
+      el.innerHTML = `<div class="rec-empty" style="grid-column:1/-1"><div class="rec-icon">🎬</div><p>No recommendations yet — try rating more titles!</p></div>`;
+      return;
+    }
+
+    // Render with reason tags
+    el.innerHTML = items.map(m => {
+      const type = m.first_air_date ? 'tv' : 'movie';
+      const base = cardHTML(m, type);
+      // inject reason tag before closing card div
+      const genreMatch = (m.genre_ids||[]).find(g=>topGenres.includes(String(g)));
+      const reason = genreMatch ? 'Based on your taste' : 'You might like this';
+      return base.replace('</div>', `<div class="rec-reason">${reason}</div></div>`);
+    }).join('');
+
+  } catch(e) {
+    el.innerHTML = '<p style="color:var(--text3);padding:20px">Could not load recommendations</p>';
+  }
+}
+
 // Keyboard shortcuts
 document.addEventListener('keydown', e=>{
   if(e.key==='Escape') { closePlayer(); }
@@ -1556,6 +2081,104 @@ document.addEventListener('keydown', e=>{
     document.getElementById('search-input').focus();
   }
 });
+
+// ── ANDROID TV D-PAD NAVIGATION ──────────────────────────────────────────
+(function() {
+  const FOCUSABLE = [
+    '.nav-tab', '#watchlist-btn', '#search-btn', '#search-input',
+    '.card', '.btn-play', '.btn-outline', '.tab-btn', '.genre-chip',
+    '.src-btn', '.cast-card', '.history-item', '.cw-card',
+    '#detail-play-btn', '#detail-wl-btn', '.back-btn', '.see-all',
+    '#go-ep-btn', '#season-select', '#ep-select'
+  ].join(',');
+
+  // Make all interactive elements focusable via tabIndex
+  function makeFocusable() {
+    document.querySelectorAll(FOCUSABLE).forEach(el => {
+      if(!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+    });
+  }
+  // Run on load and after any page change
+  makeFocusable();
+  const obs = new MutationObserver(makeFocusable);
+  obs.observe(document.getElementById('app'), { childList:true, subtree:true });
+
+  // D-pad key handler
+  document.addEventListener('keydown', function(e) {
+    const key = e.key;
+    // Enter / OK button = click
+    if(key === 'Enter') {
+      const el = document.activeElement;
+      if(el && el !== document.body) {
+        e.preventDefault();
+        el.click();
+        return;
+      }
+    }
+
+    // Arrow key spatial navigation
+    if(!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(key)) return;
+    e.preventDefault();
+
+    const all = Array.from(document.querySelectorAll(FOCUSABLE))
+      .filter(el => {
+        const r = el.getBoundingClientRect();
+        return r.width > 0 && r.height > 0 &&
+               r.top < window.innerHeight && r.bottom > 0 &&
+               r.left < window.innerWidth && r.right > 0;
+      });
+
+    const current = document.activeElement;
+    if(!current || current === document.body || !all.includes(current)) {
+      // nothing focused — focus first visible focusable
+      if(all[0]) all[0].focus();
+      return;
+    }
+
+    const cr = current.getBoundingClientRect();
+    const cx = cr.left + cr.width / 2;
+    const cy = cr.top  + cr.height / 2;
+
+    // Score candidates by direction
+    let best = null, bestScore = Infinity;
+    all.forEach(el => {
+      if(el === current) return;
+      const r  = el.getBoundingClientRect();
+      const ex = r.left + r.width  / 2;
+      const ey = r.top  + r.height / 2;
+      const dx = ex - cx, dy = ey - cy;
+
+      // Must be in the right direction
+      let inDir = false;
+      if(key === 'ArrowRight' && dx > 10) inDir = true;
+      if(key === 'ArrowLeft'  && dx < -10) inDir = true;
+      if(key === 'ArrowDown'  && dy > 10) inDir = true;
+      if(key === 'ArrowUp'    && dy < -10) inDir = true;
+      if(!inDir) return;
+
+      // Score = weighted distance (prefer axis-aligned)
+      const primary   = (key==='ArrowLeft'||key==='ArrowRight') ? Math.abs(dx) : Math.abs(dy);
+      const secondary = (key==='ArrowLeft'||key==='ArrowRight') ? Math.abs(dy) : Math.abs(dx);
+      const score = primary + secondary * 2.5;
+      if(score < bestScore) { bestScore = score; best = el; }
+    });
+
+    if(best) {
+      best.focus();
+      best.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'nearest' });
+    }
+  });
+
+  // Back button (Escape or Android back = keyCode 27) — go back
+  document.addEventListener('keydown', function(e) {
+    if(e.key === 'Escape' || e.keyCode === 10009) {
+      const playerOpen = document.getElementById('player-modal').classList.contains('open');
+      if(playerOpen) { closePlayer(); return; }
+      goBack();
+    }
+  });
+})();
+
 </script>
 </body>
 </html>
