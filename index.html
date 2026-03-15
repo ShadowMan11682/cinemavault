@@ -1505,9 +1505,14 @@ async function openDetail(id, type) {
 
   try {
     const endpoint = type==='movie' ? `/movie/${id}` : `/tv/${id}`;
+    // TV/Anime use aggregate_credits which includes voice actors
+    const creditsEndpoint = type === 'tv'
+      ? `${endpoint}/aggregate_credits`
+      : `${endpoint}/credits`;
+
     const [detail, credits, videos, keywords, externalIds] = await Promise.all([
       api(endpoint),
-      api(`${endpoint}/credits`),
+      api(creditsEndpoint),
       api(`${endpoint}/videos`),
       api(`${endpoint}/keywords`).catch(()=>({keywords:[],results:[]})),
       api(`${endpoint}/external_ids`).catch(()=>({}))
@@ -1626,16 +1631,18 @@ async function openDetail(id, type) {
       document.getElementById('trailer-container').innerHTML = '<div class="no-trailer">No trailer available</div>';
     }
 
-    // cast
-    const cast = (credits.cast||[]).slice(0,20);
-    document.getElementById('cast-grid').innerHTML = cast.length ? cast.map(a => {
+    // cast — aggregate_credits uses 'roles[0].character', regular uses 'character'
+    const rawCast = (credits.cast||[]).slice(0,24);
+    document.getElementById('cast-grid').innerHTML = rawCast.length ? rawCast.map(a => {
       const photo = imgUrl(a.profile_path,'w185');
+      // aggregate_credits stores character in roles array
+      const character = a.character || (a.roles && a.roles[0]?.character) || '';
       return `<div class="cast-card" onclick="openActor(${a.id})">
         ${photo
           ? `<img class="cast-avatar" src="${photo}" alt="${a.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><div class="cast-avatar-placeholder" style="display:none">🎭</div>`
           : `<div class="cast-avatar-placeholder">🎭</div>`}
         <div class="cast-name">${a.name}</div>
-        <div class="cast-char">${a.character||''}</div>
+        <div class="cast-char">${character}</div>
       </div>`;
     }).join('') : '<p style="color:var(--text3)">No cast info available</p>';
 
@@ -1797,46 +1804,24 @@ function isInAndroid() {
 }
 
 function launchInBearPlayer(url) {
-  // Bear Player can only play direct stream URLs (m3u8/mp4), not embed pages.
-  // We open the embed URL in Chrome — it plays in the browser's native player.
-  // If the URL looks like a direct stream, send to Bear Player directly.
-  const isDirectStream = url.includes('.m3u8') || url.includes('.mp4') || url.includes('manifest');
-  
-  if(isDirectStream) {
-    // Direct stream — open in Bear Player
-    const bear = 'com.fantastical.bear_player';
-    const intent = `intent:${url}#Intent;package=${bear};type=video/*;S.browser_fallback_url=${encodeURIComponent(url)};end`;
-    const a = document.createElement('a');
-    a.href = intent;
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => document.body.removeChild(a), 500);
-  } else {
-    // Embed page — open in Chrome external browser
-    // This plays the stream inside the browser's full-screen video player
-    const chromeIntent = `intent:${url}#Intent;action=android.intent.action.VIEW;package=com.android.chrome;S.browser_fallback_url=${encodeURIComponent(url)};end`;
-    const a = document.createElement('a');
-    a.href = chromeIntent;
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => document.body.removeChild(a), 500);
+  // Communicate with Kodular via WebViewString
+  // Kodular block: when WebViewString changes → read value → ActivityStarter
+  try {
+    // Method 1: Kodular WebViewString bridge
+    window.AppInventor.setWebViewString('BEAR::' + url);
+  } catch(e) {
+    // Method 2: fallback — just navigate directly, Kodular's
+    // WebViewer.WebViewString change event will catch it
+    window.location.href = url;
   }
 }
 
 function openInBrowser(url) {
-  // Open in external browser via intent
-  if(isInAndroid()) {
-    const intent = `intent:${url}#Intent;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;end`;
-    const a = document.createElement('a');
-    a.href = intent;
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => document.body.removeChild(a), 500);
-  } else {
-    window._origOpen ? window._origOpen(url, '_blank') : window.open(url, '_blank');
+  try {
+    // Kodular WebViewString bridge — send to blocks
+    window.AppInventor.setWebViewString('BROWSER::' + url);
+  } catch(e) {
+    window.location.href = url;
   }
 }
 
