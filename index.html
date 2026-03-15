@@ -47,10 +47,10 @@
   #navbar {
     position: fixed; top:0; left:0; right:0; z-index:999;
     height:60px;
-    background: rgba(10,10,11,0.92);
+    background: rgba(10,10,11,0.95);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
-    display:flex; align-items:center; gap:16px; padding:0 24px;
+    display:flex; align-items:center; gap:16px; padding:0 20px;
   }
   #navbar .logo {
     font-family: 'Playfair Display', serif;
@@ -59,16 +59,116 @@
     -webkit-background-clip:text; -webkit-text-fill-color:transparent;
     cursor:pointer; white-space:nowrap;
   }
-  .nav-tabs { display:flex; gap:4px; }
-  .nav-tab {
-    padding:6px 14px; border-radius:6px; cursor:pointer;
-    font-size:13px; font-weight:500; color:var(--text2);
+  #hamburger {
+    width:36px; height:36px; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:5px;
+    cursor:pointer; border-radius:8px; border:1px solid var(--border);
+    background:var(--bg3); flex-shrink:0; transition:all .2s;
+  }
+  #hamburger:hover { border-color:var(--border2); }
+  #hamburger span {
+    display:block; width:18px; height:2px;
+    background:var(--text2); border-radius:2px; transition:all .3s;
+  }
+  #hamburger.open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+  #hamburger.open span:nth-child(2){ opacity:0; }
+  #hamburger.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    position:fixed; top:0; left:0; bottom:0; z-index:998;
+    width:280px;
+    background:rgba(10,10,11,0.98);
+    backdrop-filter:blur(24px);
+    border-right:1px solid var(--border);
+    transform:translateX(-100%);
+    transition:transform .32s cubic-bezier(.4,0,.2,1);
+    display:flex; flex-direction:column;
+    padding-top:70px;
+    overflow-y:auto;
+  }
+  #sidebar.open { transform:translateX(0); }
+  #sidebar-overlay {
+    position:fixed; inset:0; z-index:997;
+    background:rgba(0,0,0,0.6);
+    opacity:0; pointer-events:none;
+    transition:opacity .32s ease;
+  }
+  #sidebar-overlay.open { opacity:1; pointer-events:all; }
+
+  /* Profile section at top of sidebar */
+  #sidebar-profile {
+    padding:16px 20px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:8px;
+  }
+  #sidebar-profile-card {
+    display:flex; align-items:center; gap:12px;
+    cursor:pointer; padding:10px 12px; border-radius:10px;
+    border:1px solid var(--border); background:var(--bg3);
+    transition:all .2s; margin-bottom:10px;
+  }
+  #sidebar-profile-card:hover { border-color:var(--border2); }
+  #sidebar-profile-avatar { font-size:28px; }
+  #sidebar-profile-info { flex:1; }
+  #sidebar-profile-name { font-size:14px; font-weight:500; color:var(--text); }
+  #sidebar-profile-sub { font-size:11px; color:var(--text3); margin-top:2px; }
+  .sidebar-profile-chevron { color:var(--text3); font-size:12px; transition:transform .2s; }
+  #sidebar-profile-card.expanded .sidebar-profile-chevron { transform:rotate(180deg); }
+
+  /* Profile dropdown in sidebar */
+  #sidebar-profile-dropdown {
+    display:none; flex-direction:column; gap:6px; margin-bottom:6px;
+  }
+  #sidebar-profile-dropdown.open { display:flex; }
+  .sp-profile-item {
+    display:flex; align-items:center; gap:10px;
+    padding:8px 12px; border-radius:8px; cursor:pointer;
+    transition:background .2s; font-size:13px; color:var(--text2);
+  }
+  .sp-profile-item:hover { background:var(--bg4); color:var(--text); }
+  .sp-profile-item.active-p { color:var(--gold); }
+  .sp-profile-item .sp-avatar { font-size:20px; }
+  .sp-add-profile {
+    display:flex; align-items:center; gap:10px;
+    padding:8px 12px; border-radius:8px; cursor:pointer;
+    border:1px dashed var(--border); color:var(--text3);
+    font-size:13px; transition:all .2s;
+  }
+  .sp-add-profile:hover { border-color:var(--gold); color:var(--gold); }
+
+  /* Sidebar nav items */
+  .sidebar-section { padding:8px 12px; }
+  .sidebar-section-label {
+    font-size:10px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--text3); padding:0 8px; margin-bottom:6px;
+  }
+  .sidebar-item {
+    display:flex; align-items:center; gap:12px;
+    padding:11px 12px; border-radius:10px; cursor:pointer;
+    font-size:14px; font-weight:500; color:var(--text2);
     transition:all .2s; border:1px solid transparent;
   }
-  .nav-tab:hover, .nav-tab.active {
-    color:var(--gold); border-color:var(--border2);
-    background:var(--gold-dim);
+  .sidebar-item:hover { background:var(--bg3); color:var(--text); border-color:var(--border); }
+  .sidebar-item.active { color:var(--gold); background:var(--gold-dim); border-color:var(--border2); }
+  .sidebar-item .si-icon { font-size:18px; width:24px; text-align:center; }
+  .sidebar-item .si-badge {
+    margin-left:auto; font-size:10px; background:var(--crimson);
+    color:#fff; padding:2px 7px; border-radius:10px;
   }
+
+  /* Edit/delete profile buttons */
+  .sp-profile-actions {
+    display:flex; gap:6px; margin-top:4px;
+  }
+  .sp-action-btn {
+    flex:1; padding:5px 8px; border-radius:6px; font-size:11px;
+    cursor:pointer; border:1px solid var(--border); background:var(--bg4);
+    color:var(--text2); font-family:'Outfit',sans-serif; transition:all .2s;
+  }
+  .sp-action-btn:hover { border-color:var(--border2); color:var(--text); }
+  .sp-action-btn.del { border-color:rgba(220,20,60,0.3); color:var(--crimson); }
+  .sp-action-btn.del:hover { background:rgba(220,20,60,0.1); }
   #search-wrap {
     margin-left:auto; display:flex; align-items:center;
     background:var(--bg3); border:1px solid var(--border);
@@ -732,6 +832,49 @@
   #intro-vignette{position:absolute;inset:0;pointer-events:none;z-index:25;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,0.92) 100%)}
   #intro-glow{position:absolute;pointer-events:none;z-index:11;border-radius:50%;background:radial-gradient(ellipse at center,rgba(240,200,80,0.88) 0%,rgba(201,168,76,0.52) 28%,rgba(160,120,20,0.16) 55%,transparent 78%);filter:blur(22px);opacity:0;will-change:opacity;mix-blend-mode:screen}
   #intro-hint{position:fixed;bottom:74px;left:50%;transform:translateX(-50%);font-family:'Playfair Display',serif;font-size:11px;font-weight:900;letter-spacing:0.38em;text-transform:uppercase;color:rgba(255,255,255,0.2);z-index:100000;opacity:0;transition:opacity 1s ease;white-space:nowrap;pointer-events:none;user-select:none}
+
+  /* ── STREAM LINKS PANEL ── */
+  #stream-links-panel {
+    padding:12px 20px; background:var(--bg2);
+    border-bottom:1px solid var(--border); flex-shrink:0;
+    max-height:200px; overflow-y:auto;
+    display:none;
+  }
+  #stream-links-panel.visible { display:block; }
+  .stream-link-item {
+    display:flex; align-items:center; gap:10px;
+    padding:8px 12px; border-radius:8px; cursor:pointer;
+    border:1px solid var(--border); background:var(--bg4);
+    margin-bottom:6px; transition:all .2s; font-size:13px;
+  }
+  .stream-link-item:hover, .stream-link-item.active-link {
+    border-color:var(--gold); background:var(--gold-dim); color:var(--gold);
+  }
+  .stream-quality { font-weight:600; color:var(--gold); min-width:50px; }
+  .stream-provider { color:var(--text2); flex:1; }
+  .stream-loading { color:var(--text3); font-size:13px; padding:8px; text-align:center; }
+
+  /* ── SUBTITLE OVERLAY ── */
+  #subtitle-overlay {
+    position:absolute; bottom:60px; left:50%;
+    transform:translateX(-50%);
+    z-index:10; pointer-events:none;
+    text-align:center; max-width:85%;
+  }
+  .subtitle-line {
+    display:inline-block;
+    background:rgba(0,0,0,0.82);
+    color:#fff; font-size:18px; font-weight:500;
+    padding:4px 12px; border-radius:4px;
+    line-height:1.5; text-shadow:1px 1px 2px rgba(0,0,0,0.9);
+    font-family:'Outfit',sans-serif;
+  }
+  #subtitle-btn {
+    padding:5px 12px; border-radius:5px; font-size:12px;
+    cursor:pointer; border:1px solid var(--border); color:var(--text2);
+    background:var(--bg4); font-family:'Outfit',sans-serif; transition:all .2s;
+  }
+  #subtitle-btn.active { border-color:var(--gold); color:var(--gold); background:var(--gold-dim); }
 </style>
 </head>
 <body>
@@ -755,21 +898,49 @@
 
 
 <!-- NAVBAR -->
-<nav id="navbar">
-  <div class="logo" onclick="showPage('home')">🎬 CinemaVault</div>
-  <div class="nav-tabs">
-    <div class="nav-tab active" data-page="home" onclick="switchNav('home')">Home</div>
-    <div class="nav-tab" data-page="movies" onclick="switchNav('movies')">Movies</div>
-    <div class="nav-tab" data-page="tv" onclick="switchNav('tv')">TV Shows</div>
-    <div class="nav-tab" data-page="anime" onclick="switchNav('anime')">Anime</div>
-    <div class="nav-tab" data-page="recommended" onclick="switchNav('recommended')">✦ For You</div>
+<!-- SIDEBAR OVERLAY -->
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <!-- Profile section -->
+  <div id="sidebar-profile">
+    <div id="sidebar-profile-card" onclick="toggleProfileDropdown()">
+      <span id="sidebar-profile-avatar">👤</span>
+      <div id="sidebar-profile-info">
+        <div id="sidebar-profile-name">Guest</div>
+        <div id="sidebar-profile-sub">Tap to switch profile</div>
+      </div>
+      <span class="sidebar-profile-chevron">▾</span>
+    </div>
+    <div id="sidebar-profile-dropdown"></div>
   </div>
+
+  <!-- Nav items -->
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Browse</div>
+    <div class="sidebar-item active" data-page="home" onclick="sidebarNav('home')"><span class="si-icon">🏠</span> Home</div>
+    <div class="sidebar-item" data-page="movies" onclick="sidebarNav('movies')"><span class="si-icon">🎬</span> Movies</div>
+    <div class="sidebar-item" data-page="tv" onclick="sidebarNav('tv')"><span class="si-icon">📺</span> TV Shows</div>
+    <div class="sidebar-item" data-page="anime" onclick="sidebarNav('anime')"><span class="si-icon">⛩️</span> Anime</div>
+    <div class="sidebar-item" data-page="recommended" onclick="sidebarNav('recommended')"><span class="si-icon">✦</span> For You</div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">My Stuff</div>
+    <div class="sidebar-item" data-page="watchlist" onclick="sidebarNav('watchlist')"><span class="si-icon">♡</span> Watchlist</div>
+    <div class="sidebar-item" data-page="history" onclick="sidebarNav('history')"><span class="si-icon">🕐</span> History</div>
+  </div>
+</div>
+
+<nav id="navbar">
+  <div id="hamburger" onclick="toggleSidebar()">
+    <span></span><span></span><span></span>
+  </div>
+  <div class="logo" onclick="sidebarNav('home')">🎬 CinemaVault</div>
   <div id="search-wrap">
     <input id="search-input" type="text" placeholder="Search movies, shows, actors…" onkeydown="if(event.key==='Enter')doSearch()"/>
     <button id="search-btn" onclick="doSearch()">🔍</button>
   </div>
-  <div id="active-profile-btn" onclick="openProfileScreen()"><span id="active-profile-avatar">👤</span><span id="active-profile-name">Guest</span></div>
-  <button id="watchlist-btn" onclick="showPage('watchlist')">♡ Watchlist</button>
 </nav>
 
 
@@ -1015,8 +1186,12 @@
     <span id="player-title">–</span>
     <button id="player-close" onclick="closePlayer()">✕</button>
   </div>
-  <div id="player-sources">
-    <span class="src-label">Source:</span>
+  <div id="player-sources" style="display:flex;align-items:center;gap:8px;padding:8px 20px;background:var(--bg3);border-bottom:1px solid var(--border);flex-wrap:wrap;flex-shrink:0">
+    <span class="src-label">Embed:</span>
+    <button id="subtitle-btn" onclick="toggleSubtitles()">CC Subtitles</button>
+  </div>
+  <div id="stream-links-panel">
+    <div class="stream-loading">🔍 Fetching stream links…</div>
   </div>
   <div id="ep-selector">
     <span class="ep-label">Season:</span>
@@ -1025,7 +1200,8 @@
     <select id="ep-select"></select>
     <button id="go-ep-btn" onclick="loadEpisode()">▶ Play</button>
   </div>
-  <div id="player-frame-wrap">
+  <div id="player-frame-wrap" style="position:relative">
+    <div id="subtitle-overlay"></div>
     <iframe id="player-iframe" allowfullscreen allow="autoplay; fullscreen"></iframe>
   </div>
 </div>
@@ -1140,7 +1316,7 @@ function imgUrl(path, size='w500') {
 
 // ── INIT ─────────────────────────────────────────────────────────────────────
 window.onload = async () => {
-  updateNavProfile();
+  updateSidebarProfile();
   // Show profile screen on first load
   if(!localStorage.getItem('cv_active_profile')) {
     renderProfileScreen();
@@ -1414,7 +1590,7 @@ async function openDetail(id, type) {
         `<div style="position:relative;width:100%;aspect-ratio:16/9">
           <iframe id="yt-frame" src="https://www.youtube-nocookie.com/embed/${key}?autoplay=0&rel=0&modestbranding=1"
             style="width:100%;height:100%;border:none;display:block"
-            allowfullscreen allow="autoplay;fullscreen;encrypted-media"></iframe>
+            allowfullscreen allow="autoplay;fullscreen;encrypted-media" sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"></iframe>
           <div id="yt-fallback" style="display:none;position:absolute;inset:0;cursor:pointer;background:#0a0a0b" onclick="window.open('${ytUrl}','_blank')">
             <img src="${thumb}" style="width:100%;height:100%;object-fit:cover;opacity:0.7" onerror="this.src='https://img.youtube.com/vi/${key}/hqdefault.jpg'"/>
             <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px">
@@ -1552,14 +1728,9 @@ function openPlayer(id, type, title, season=1, episode=1) {
   const modal = document.getElementById('player-modal');
   document.getElementById('player-title').textContent = title||'–';
   modal.classList.add('open');
+  modal._id = id; modal._type = type; modal._s = season; modal._e = episode;
 
-  // build source buttons
-  const srcEl = document.getElementById('player-sources');
-  const sources = SOURCES[type==='tv'?'tv':'movie'];
-  srcEl.innerHTML = '<span class="src-label">Source:</span>' +
-    sources.map((s,i)=>`<button class="src-btn ${i===0?'active':''}" onclick="setSource(${i})">${s.label}</button>`).join('');
-
-  // ep selector
+  // ep selector for TV
   const epEl = document.getElementById('ep-selector');
   if(type==='tv') {
     epEl.classList.add('visible');
@@ -1573,13 +1744,19 @@ function openPlayer(id, type, title, season=1, episode=1) {
     epEl.classList.remove('visible');
   }
 
-  // store play state
-  modal._id = id; modal._type = type; modal._s = season; modal._e = episode;
-  modal._srcIdx = 0;
-  setPlayerSrc();
+  // fetch stream links
+  fetchStreamLinks(id, type, season, episode);
 
-  // add to history
-  if(currentDetail) addHistory(currentDetail);
+  // fetch subtitles
+  if(currentDetail) {
+    addHistory(currentDetail);
+    const imdbId = currentDetail.imdb_id || null;
+    subtitleCues = []; subtitlesOn = false; subtitleStart = null;
+    if(subtitleTimer) clearInterval(subtitleTimer);
+    document.getElementById('subtitle-btn').classList.remove('active');
+    document.getElementById('subtitle-btn').textContent = 'CC Subtitles';
+    fetchSubtitles(imdbId, title, null, type);
+  }
 }
 
 function setSource(i) {
@@ -1589,54 +1766,78 @@ function setSource(i) {
   setPlayerSrc();
 }
 
-// Detect Android WebView (Kodular)
-const isAndroid = typeof Android !== 'undefined' || /wv/.test(navigator.userAgent) || (navigator.userAgent.includes('Android') && navigator.userAgent.includes('Version/'));
+// ── KODULAR SETTINGS NEEDED FOR BEAR PLAYER ──────────────────────────────
+// In Kodular WebViewer properties, enable:
+//   - Allow External Apps Opening URLs = true
+//   - Uses Hardware Acceleration = true  
+//   - Enable JavaScript = true
+// ──────────────────────────────────────────────────────────────────────────
 
+// ── POPUP BLOCKER ───────────────────────────────────────────────────────────
+// Block all popups from embed sources
+window.open = function(url, target, features) {
+  console.log('Blocked popup:', url);
+  return null;
+};
+
+// Also block any attempts to navigate away
+window.addEventListener('beforeunload', function(e) { e.preventDefault(); });
+
+// ── PLAYER SRC ───────────────────────────────────────────────────────────────
 function setPlayerSrc() {
-  const modal = document.getElementById('player-modal');
-  const {_id, _type, _s, _e, _srcIdx} = modal;
-  const sources = SOURCES[_type==='tv'?'tv':'movie'];
-  const src = _type==='tv'
-    ? sources[_srcIdx].url(_id, _s, _e)
-    : sources[_srcIdx].url(_id);
+  // legacy — now handled by fetchStreamLinks/playStreamLink
+}
 
-  if(isAndroid) {
-    // On Android: try to open in Bear Player via intent, fallback to system chooser
-    launchInPlayer(src);
+// ── BEAR PLAYER LAUNCH ───────────────────────────────────────────────────────
+// Check if running in Android WebView
+function isInAndroid() {
+  // Force true on any Android device — Kodular WebView doesn't always
+  // include 'wv' or 'WebView' in the UA string
+  return navigator.userAgent.includes('Android');
+}
+
+function launchInBearPlayer(url) {
+  // Bear Player can only play direct stream URLs (m3u8/mp4), not embed pages.
+  // We open the embed URL in Chrome — it plays in the browser's native player.
+  // If the URL looks like a direct stream, send to Bear Player directly.
+  const isDirectStream = url.includes('.m3u8') || url.includes('.mp4') || url.includes('manifest');
+  
+  if(isDirectStream) {
+    // Direct stream — open in Bear Player
+    const bear = 'com.fantastical.bear_player';
+    const intent = `intent:${url}#Intent;package=${bear};type=video/*;S.browser_fallback_url=${encodeURIComponent(url)};end`;
+    const a = document.createElement('a');
+    a.href = intent;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => document.body.removeChild(a), 500);
   } else {
-    // On browser: use iframe as normal
-    document.getElementById('player-iframe').src = src;
-  }
-}
-
-function launchInPlayer(url) {
-  // Show a launch overlay inside the player modal instead of blank iframe
-  const wrap = document.getElementById('player-frame-wrap');
-  wrap.innerHTML = `
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;background:#0a0a0b">
-      <div style="font-size:48px">▶</div>
-      <div style="font-family:'Outfit',sans-serif;font-size:16px;color:#c9a84c;font-weight:500">Ready to play</div>
-      <div style="font-family:'Outfit',sans-serif;font-size:12px;color:#5a5548;text-align:center;max-width:280px">Tap the button below to open in Bear Player or your preferred video app</div>
-      <button onclick="openInBearPlayer('${url.replace(/'/g,"\'")}'')" style="padding:14px 32px;background:linear-gradient(135deg,#dc143c,#8b1a1a);border:none;border-radius:8px;color:#fff;font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;cursor:pointer;letter-spacing:0.5px;box-shadow:0 4px 20px rgba(220,20,60,0.4)">▶ Open in Bear Player</button>
-      <button onclick="openInBrowser('${url.replace(/'/g,"\'")}'')" style="padding:10px 24px;background:transparent;border:1px solid rgba(201,168,76,0.3);border-radius:8px;color:rgba(201,168,76,0.7);font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer">Open in Browser</button>
-      <div style="font-family:'Outfit',sans-serif;font-size:10px;color:#3a3832;margin-top:8px">Source: ${url}</div>
-    </div>`;
-}
-
-function openInBearPlayer(url) {
-  // Intent URL — tries Bear Player first, falls back to system video chooser
-  const bearPackage = 'com.fantastical.bear_player';
-  const intentUrl = `intent:${url}#Intent;package=${bearPackage};type=video/*;S.browser_fallback_url=${encodeURIComponent(url)};end`;
-  try {
-    window.location.href = intentUrl;
-  } catch(e) {
-    // fallback: system chooser
-    window.location.href = `intent:${url}#Intent;type=video/*;end`;
+    // Embed page — open in Chrome external browser
+    // This plays the stream inside the browser's full-screen video player
+    const chromeIntent = `intent:${url}#Intent;action=android.intent.action.VIEW;package=com.android.chrome;S.browser_fallback_url=${encodeURIComponent(url)};end`;
+    const a = document.createElement('a');
+    a.href = chromeIntent;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => document.body.removeChild(a), 500);
   }
 }
 
 function openInBrowser(url) {
-  window.open(url, '_blank');
+  // Open in external browser via intent
+  if(isInAndroid()) {
+    const intent = `intent:${url}#Intent;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;end`;
+    const a = document.createElement('a');
+    a.href = intent;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => document.body.removeChild(a), 500);
+  } else {
+    window._origOpen ? window._origOpen(url, '_blank') : window.open(url, '_blank');
+  }
 }
 
 async function loadSeasons() {
@@ -1659,7 +1860,7 @@ function loadEpisode() {
   const modal = document.getElementById('player-modal');
   modal._e = parseInt(document.getElementById('ep-select').value)||1;
   modal._s = parseInt(document.getElementById('season-select').value)||1;
-  setPlayerSrc();
+  fetchStreamLinks(modal._id, modal._type, modal._s, modal._e);
 }
 
 function closePlayer() {
@@ -1883,6 +2084,360 @@ function showToast(msg) {
 }
 
 
+
+// ══════════════════════════════════════════════════════
+// SIDEBAR
+// ══════════════════════════════════════════════════════
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('sidebar-overlay');
+  const hb = document.getElementById('hamburger');
+  const open = sb.classList.toggle('open');
+  ov.classList.toggle('open', open);
+  hb.classList.toggle('open', open);
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+}
+function sidebarNav(name) {
+  closeSidebar();
+  document.querySelectorAll('.sidebar-item').forEach(t => t.classList.toggle('active', t.dataset.page===name));
+  showPage(name);
+  if(name==='movies') loadMoviePage(activeGenreMovie);
+  if(name==='tv') loadTVPage(activeGenreTV);
+  if(name==='anime') loadAnime();
+  if(name==='recommended') loadRecommended();
+}
+
+// ══════════════════════════════════════════════════════
+// PROFILE DROPDOWN IN SIDEBAR
+// ══════════════════════════════════════════════════════
+function updateSidebarProfile() {
+  const p = getActiveProfile();
+  document.getElementById('sidebar-profile-avatar').textContent = p.avatar;
+  document.getElementById('sidebar-profile-name').textContent   = p.name;
+  renderSidebarDropdown();
+}
+
+function renderSidebarDropdown() {
+  const dd = document.getElementById('sidebar-profile-dropdown');
+  dd.innerHTML = profiles.map(p => `
+    <div class="sp-profile-item ${p.id===activeProfileId?'active-p':''}" >
+      <span class="sp-avatar">${p.avatar}</span>
+      <span style="flex:1" onclick="switchSidebarProfile('${p.id}')">${p.name}${p.id===activeProfileId?' ✓':''}</span>
+      <button class="sp-action-btn" onclick="event.stopPropagation();openEditProfile('${p.id}')">Edit</button>
+      ${profiles.length>1?`<button class="sp-action-btn del" onclick="event.stopPropagation();confirmDeleteProfile('${p.id}')">✕</button>`:''}
+    </div>`).join('') +
+    (profiles.length < 5 ? `<div class="sp-add-profile" onclick="openNewProfile()"><span>＋</span> Add Profile</div>` : '');
+}
+
+function toggleProfileDropdown() {
+  const dd  = document.getElementById('sidebar-profile-dropdown');
+  const card = document.getElementById('sidebar-profile-card');
+  const open = dd.classList.toggle('open');
+  card.classList.toggle('expanded', open);
+}
+
+function switchSidebarProfile(id) {
+  activeProfileId = id;
+  localStorage.setItem('cv_active_profile', id);
+  watchlist = getWatchlist();
+  history_  = getHistory();
+  updateSidebarProfile();
+  updateNavProfile();
+  loadContinueWatching();
+  toggleProfileDropdown();
+  closeSidebar();
+  // replay intro then continue
+  replayIntroForProfile();
+  showToast('Switched to ' + getActiveProfile().name);
+}
+
+function confirmDeleteProfile(id) {
+  if(!confirm('Delete this profile? All its data will be lost.')) return;
+  profiles = profiles.filter(p=>p.id!==id);
+  if(activeProfileId===id) {
+    activeProfileId = profiles[0].id;
+    localStorage.setItem('cv_active_profile', activeProfileId);
+    watchlist = getWatchlist();
+    history_  = getHistory();
+  }
+  localStorage.setItem('cv_profiles', JSON.stringify(profiles));
+  updateSidebarProfile();
+  updateNavProfile();
+  showToast('Profile deleted');
+}
+
+function replayIntroForProfile() {
+  // show intro stage again briefly then dismiss
+  const stage = document.getElementById('intro-stage');
+  if(!stage) return;
+  stage.style.display='flex';
+  stage.style.opacity='1';
+  stage.classList.remove('hidden');
+  // reset and replay
+  const iwm  = document.getElementById('intro-wordmark');
+  const ifl  = document.getElementById('intro-flash');
+  const ibl  = document.getElementById('intro-bloom');
+  const isub = document.getElementById('intro-sub');
+  const iglw = document.getElementById('intro-glow');
+  [iwm,ifl,ibl,isub,iglw].forEach(el=>{ if(el){ el.style.transition='none'; el.style.opacity='0'; }});
+  Array.from(document.querySelectorAll('.intro-stripe')).forEach(s=>{ s.style.transition='none'; s.style.transform='scaleY(0)'; });
+  Array.from(document.querySelectorAll('.ilc,.ilv')).forEach(l=>{ l.style.transition='none'; l.style.opacity='0'; });
+  // small delay then run
+  setTimeout(function(){
+    // simplified quick replay — just flash wordmark
+    if(iwm){ iwm.style.opacity='1'; iwm.style.transform='scale(0.72)'; iwm.style.transition='transform .5s cubic-bezier(.34,1.4,.64,1), opacity .3s ease'; iwm.style.transform='scale(1)'; }
+    if(ifl){ ifl.style.transition='opacity .08s'; ifl.style.opacity='1'; setTimeout(()=>{ ifl.style.transition='opacity .5s'; ifl.style.opacity='0'; },80); }
+  }, 100);
+  setTimeout(function(){
+    stage.classList.add('hidden');
+    setTimeout(()=>{ stage.style.display='none'; }, 500);
+  }, 2200);
+}
+
+// ══════════════════════════════════════════════════════
+// STREAM LINK FETCHER — vidsrc.rip (returns direct .m3u8 streams)
+// ══════════════════════════════════════════════════════
+let currentStreamLinks = [];
+let activeStreamIdx = 0;
+
+async function fetchStreamLinks(id, type, season, episode) {
+  const panel = document.getElementById('stream-links-panel');
+  panel.classList.add('visible');
+  panel.innerHTML = '<div class="stream-loading">🔍 Fetching direct stream links…</div>';
+
+  let allLinks = [];
+
+  try {
+    // ── vidsrc.rip — returns real .m3u8 direct streams ──────────────────────
+    // API: https://vidsrc.rip/api/9anime?id=TMDB_ID&type=movie|tv&season=&episode=
+    const ripBase = 'https://vidsrc.rip/api';
+    const ripUrl = type === 'tv'
+      ? `${ripBase}/9anime?id=${id}&type=tv&season=${season}&episode=${episode}`
+      : `${ripBase}/9anime?id=${id}&type=movie`;
+
+    const ripRes = await fetch(ripUrl).catch(()=>null);
+    if(ripRes && ripRes.ok) {
+      const ripData = await ripRes.json().catch(()=>null);
+      if(ripData && ripData.sources) {
+        ripData.sources.forEach(s => {
+          allLinks.push({
+            label: s.provider || 'vidsrc.rip',
+            quality: s.quality || 'Auto',
+            url: s.url,
+            direct: s.url.includes('.m3u8') || s.url.includes('.mp4')
+          });
+        });
+      }
+    }
+  } catch(e) {}
+
+  try {
+    // ── vidbinge API — another direct stream source ──────────────────────────
+    const vbUrl = type === 'tv'
+      ? `https://vidbinge.dev/api/episode?imdbId=&tmdbId=${id}&season=${season}&episode=${episode}`
+      : `https://vidbinge.dev/api/movie?imdbId=&tmdbId=${id}`;
+    const vbRes = await fetch(vbUrl).catch(()=>null);
+    if(vbRes && vbRes.ok) {
+      const vbData = await vbRes.json().catch(()=>null);
+      if(vbData && vbData.stream) {
+        (vbData.stream.sources || []).forEach(s => {
+          allLinks.push({
+            label: 'VidBinge · ' + (s.quality||'Auto'),
+            quality: s.quality || 'Auto',
+            url: s.url,
+            direct: true
+          });
+        });
+      }
+    }
+  } catch(e) {}
+
+  // ── Fallback embed sources if direct APIs return nothing ─────────────────
+  const embedFallbacks = type === 'tv' ? [
+    { label:'VidSrc',      quality:'Auto',  url:`https://vidsrc.to/embed/tv/${id}/${season}/${episode}`,            direct:false },
+    { label:'VidSrc.me',   quality:'1080p', url:`https://vidsrc.me/embed/tv?tmdb=${id}&season=${season}&episode=${episode}`, direct:false },
+    { label:'SmashyStream',quality:'1080p', url:`https://player.smashy.stream/tv/${id}?s=${season}&e=${episode}`,  direct:false },
+    { label:'AutoEmbed',   quality:'Auto',  url:`https://autoembed.co/tv/tmdb/${id}-${season}-${episode}`,         direct:false },
+    { label:'EmbedSu',     quality:'720p',  url:`https://embed.su/embed/tv/${id}/${season}/${episode}`,            direct:false },
+    { label:'2Embed',      quality:'720p',  url:`https://www.2embed.cc/embedtv/${id}&s=${season}&e=${episode}`,    direct:false },
+  ] : [
+    { label:'VidSrc',      quality:'Auto',  url:`https://vidsrc.to/embed/movie/${id}`,              direct:false },
+    { label:'VidSrc.me',   quality:'1080p', url:`https://vidsrc.me/embed/movie?tmdb=${id}`,         direct:false },
+    { label:'SmashyStream',quality:'1080p', url:`https://player.smashy.stream/movie/${id}`,         direct:false },
+    { label:'AutoEmbed',   quality:'Auto',  url:`https://autoembed.co/movie/tmdb/${id}`,            direct:false },
+    { label:'EmbedSu',     quality:'720p',  url:`https://embed.su/embed/movie/${id}`,               direct:false },
+    { label:'2Embed',      quality:'720p',  url:`https://www.2embed.cc/embed/${id}`,                direct:false },
+    { label:'rive',        quality:'1080p', url:`https://rivestream.live/embed?type=movie&id=${id}`,direct:false },
+    { label:'vidsrc.icu',  quality:'Auto',  url:`https://vidsrc.icu/embed/movie/${id}`,             direct:false },
+  ];
+
+  // Put direct streams first, then embeds
+  allLinks = [...allLinks, ...embedFallbacks];
+
+  if(!allLinks.length) {
+    panel.innerHTML = '<div class="stream-loading">❌ No streams found</div>';
+    return;
+  }
+
+  currentStreamLinks = allLinks;
+  activeStreamIdx = 0;
+
+  panel.innerHTML = allLinks.map((s, i) =>
+    `<div class="stream-link-item ${i===0?'active-link':''}" onclick="playStreamLink(${i})">
+      <span class="stream-quality">${s.quality}</span>
+      <span class="stream-provider">${s.label}${s.direct?' <span style=\"color:#4caf50;font-size:10px\">● Direct</span>':' <span style=\"color:#888;font-size:10px\">○ Embed</span>'}</span>
+      <span style="color:var(--text3);font-size:11px">▶</span>
+    </div>`
+  ).join('');
+
+  // Auto-play first link
+  playStreamLink(0);
+}
+
+function playStreamLink(idx) {
+  activeStreamIdx = idx;
+  document.querySelectorAll('.stream-link-item').forEach((el,i) => el.classList.toggle('active-link', i===idx));
+  const link = currentStreamLinks[idx];
+  if(!link) return;
+  const src = link.url;
+  const isDirect = link.direct || src.includes('.m3u8') || src.includes('.mp4');
+
+  if(isInAndroid()) {
+    if(isDirect) {
+      // Direct stream — launch straight into Bear Player
+      launchInBearPlayer(src);
+    } else {
+      // Embed page — show open-in-browser overlay
+      const wrap = document.getElementById('player-frame-wrap');
+      const safeUrl = src.replace(/'/g, "\'");
+      wrap.innerHTML = `
+        <div id="subtitle-overlay"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;
+          height:100%;gap:16px;background:#0a0a0b;padding:24px;text-align:center">
+          <div style="font-size:40px">🎬</div>
+          <div style="font-family:'Playfair Display',serif;font-size:18px;color:#c9a84c;font-weight:900">
+            ${link.quality} · ${link.label}
+          </div>
+          <div style="font-family:'Outfit',sans-serif;font-size:11px;color:#5a5548;max-width:260px;line-height:1.6">
+            Embed source — opens in external browser
+          </div>
+          <button onclick="openInBrowser('${safeUrl}')"
+            style="padding:14px 36px;background:linear-gradient(135deg,#dc143c,#8b1a1a);
+            border:none;border-radius:10px;color:#fff;font-family:'Outfit',sans-serif;
+            font-size:15px;font-weight:600;cursor:pointer;
+            box-shadow:0 4px 20px rgba(220,20,60,0.4);width:100%;max-width:280px">
+            🌐 Open in Browser
+          </button>
+        </div>`;
+    }
+  } else {
+    // Desktop browser — iframe for everything
+    const wrap = document.getElementById('player-frame-wrap');
+    let iframe = wrap.querySelector('iframe');
+    if(!iframe) {
+      wrap.innerHTML = '<div id="subtitle-overlay"></div><iframe id="player-iframe" allowfullscreen allow="autoplay;fullscreen;encrypted-media" sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"></iframe>';
+      iframe = wrap.querySelector('iframe');
+    }
+    iframe.src = src;
+  }
+}
+// ══════════════════════════════════════════════════════
+// SUBTITLE SYSTEM (OpenSubtitles)
+// ══════════════════════════════════════════════════════
+const OS_API_KEY = 'SDCrPsHis4FdWeJdkMEev9BV7UPzy4Ky'; // replace with yours
+let subtitleCues  = [];
+let subtitleTimer = null;
+let subtitlesOn   = false;
+let subtitleStart = null;
+
+async function fetchSubtitles(imdbId, title, year, type) {
+  if(!imdbId && !title) return;
+  try {
+    const params = new URLSearchParams({
+      languages: 'en',
+      ...(imdbId ? {imdb_id: imdbId.replace('tt','')} : {query: title}),
+      ...(type==='tv' ? {type:'episode'} : {type:'movie'}),
+    });
+    const r = await fetch(`https://api.opensubtitles.com/api/v1/subtitles?${params}`, {
+      headers: {
+        'Api-Key': OS_API_KEY,
+        'Content-Type': 'application/json',
+        'User-Agent': 'CinemaVault v1.0'
+      }
+    });
+    const d = await r.json();
+    const best = d.data?.[0];
+    if(!best) { console.log('No subtitles found'); return; }
+    // Download subtitle file
+    const dlRes = await fetch('https://api.opensubtitles.com/api/v1/download', {
+      method:'POST',
+      headers:{ 'Api-Key': OS_API_KEY, 'Content-Type':'application/json', 'User-Agent':'CinemaVault v1.0' },
+      body: JSON.stringify({ file_id: best.attributes.files[0].file_id })
+    });
+    const dlData = await dlRes.json();
+    if(!dlData.link) return;
+    // Fetch the SRT file
+    const srtRes = await fetch(dlData.link);
+    const srtText = await srtRes.text();
+    subtitleCues = parseSRT(srtText);
+    if(subtitleCues.length > 0) {
+      subtitlesOn = true;
+      subtitleStart = Date.now();
+      document.getElementById('subtitle-btn').classList.add('active');
+      document.getElementById('subtitle-btn').textContent = 'CC On';
+      startSubtitleLoop();
+      showToast('Subtitles loaded ✓');
+    }
+  } catch(e) { console.log('Subtitle fetch failed:', e); }
+}
+
+function parseSRT(srt) {
+  const cues = [];
+  const blocks = srt.trim().split(/\n\s*\n/);
+  blocks.forEach(block => {
+    const lines = block.trim().split('\n');
+    if(lines.length < 3) return;
+    const timeMatch = lines[1].match(/(\d+):(\d+):(\d+)[,\.](\d+)\s*-->\s*(\d+):(\d+):(\d+)[,\.](\d+)/);
+    if(!timeMatch) return;
+    const toMs = (h,m,s,ms) => (+h*3600 + +m*60 + +s)*1000 + +ms;
+    const start = toMs(timeMatch[1],timeMatch[2],timeMatch[3],timeMatch[4]);
+    const end   = toMs(timeMatch[5],timeMatch[6],timeMatch[7],timeMatch[8]);
+    const text  = lines.slice(2).join(' ').replace(/<[^>]+>/g,'').trim();
+    cues.push({start, end, text});
+  });
+  return cues;
+}
+
+function startSubtitleLoop() {
+  if(subtitleTimer) clearInterval(subtitleTimer);
+  subtitleTimer = setInterval(() => {
+    if(!subtitlesOn || !subtitleStart) return;
+    const elapsed = Date.now() - subtitleStart;
+    const el = document.getElementById('subtitle-overlay');
+    if(!el) return;
+    const cue = subtitleCues.find(c => elapsed >= c.start && elapsed <= c.end);
+    el.innerHTML = cue ? `<span class="subtitle-line">${cue.text}</span>` : '';
+  }, 200);
+}
+
+function toggleSubtitles() {
+  subtitlesOn = !subtitlesOn;
+  const btn = document.getElementById('subtitle-btn');
+  btn.classList.toggle('active', subtitlesOn);
+  btn.textContent = subtitlesOn ? 'CC On' : 'CC Off';
+  if(!subtitlesOn) {
+    const el = document.getElementById('subtitle-overlay');
+    if(el) el.innerHTML = '';
+  } else if(subtitleCues.length === 0 && currentDetail) {
+    const imdbId = currentDetail.imdb_id || null;
+    fetchSubtitles(imdbId, currentDetail.title||currentDetail.name, null, currentDetail.media_type||'movie');
+  }
+}
+
 // ══════════════════════════════════════════════════════
 // PROFILE SYSTEM
 // ══════════════════════════════════════════════════════
@@ -1908,8 +2463,8 @@ function renderProfileScreen() {
 }
 
 function openProfileScreen() {
-  renderProfileScreen();
-  document.getElementById('profile-screen').style.display='flex';
+  toggleSidebar();
+  setTimeout(toggleProfileDropdown, 100);
 }
 
 function selectProfile(id) {
@@ -1918,17 +2473,14 @@ function selectProfile(id) {
   watchlist = getWatchlist();
   history_  = getHistory();
   document.getElementById('profile-screen').style.display='none';
-  updateNavProfile();
+  updateSidebarProfile();
   loadContinueWatching();
   showToast('Switched to ' + getActiveProfile().name);
-  // refresh current page data
   loadTrending();
 }
 
 function updateNavProfile() {
-  const p = getActiveProfile();
-  document.getElementById('active-profile-avatar').textContent = p.avatar;
-  document.getElementById('active-profile-name').textContent   = p.name;
+  updateSidebarProfile();
 }
 
 // Profile modal
@@ -2146,10 +2698,7 @@ async function loadRecommended() {
     setTimeout(function(){
       stage.style.display='none';
       // Show profile screen after intro
-      if(!localStorage.getItem('cv_active_profile')) {
-        renderProfileScreen();
-        document.getElementById('profile-screen').style.display='flex';
-      }
+      updateSidebarProfile();
     }, 500);
     document.removeEventListener('click', tapHandler);
     document.removeEventListener('touchstart', tapHandler);
