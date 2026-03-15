@@ -2197,84 +2197,65 @@ function replayIntroForProfile() {
 }
 
 // ══════════════════════════════════════════════════════
-// STREAM LINK FETCHER — vidsrc.rip (returns direct .m3u8 streams)
+// STREAM LINK FETCHER — uses self-hosted proxy for direct streams
 // ══════════════════════════════════════════════════════
+// Replace this with your Railway URL after deploying
+const PROXY_URL = 'https://cinemavault-proxy-production.up.railway.app';
+
 let currentStreamLinks = [];
 let activeStreamIdx = 0;
 
 async function fetchStreamLinks(id, type, season, episode) {
   const panel = document.getElementById('stream-links-panel');
   panel.classList.add('visible');
-  panel.innerHTML = '<div class="stream-loading">🔍 Fetching direct stream links…</div>';
+  panel.innerHTML = '<div class="stream-loading">🔍 Fetching stream links…</div>';
 
   let allLinks = [];
 
-  try {
-    // ── vidsrc.rip — returns real .m3u8 direct streams ──────────────────────
-    // API: https://vidsrc.rip/api/9anime?id=TMDB_ID&type=movie|tv&season=&episode=
-    const ripBase = 'https://vidsrc.rip/api';
-    const ripUrl = type === 'tv'
-      ? `${ripBase}/9anime?id=${id}&type=tv&season=${season}&episode=${episode}`
-      : `${ripBase}/9anime?id=${id}&type=movie`;
-
-    const ripRes = await fetch(ripUrl).catch(()=>null);
-    if(ripRes && ripRes.ok) {
-      const ripData = await ripRes.json().catch(()=>null);
-      if(ripData && ripData.sources) {
-        ripData.sources.forEach(s => {
-          allLinks.push({
-            label: s.provider || 'vidsrc.rip',
-            quality: s.quality || 'Auto',
-            url: s.url,
-            direct: s.url.includes('.m3u8') || s.url.includes('.mp4')
-          });
-        });
+  // ── Try proxy first for direct streams ──────────────────────────────────
+  if(PROXY_URL && PROXY_URL !== 'https://cinemavault-proxy-production.up.railway.app') {
+    try {
+      const proxyUrl = type === 'tv'
+        ? `${PROXY_URL}/streams?tmdb=${id}&type=tv&season=${season}&episode=${episode}`
+        : `${PROXY_URL}/streams?tmdb=${id}&type=movie`;
+      const res = await fetch(proxyUrl);
+      if(res.ok) {
+        const data = await res.json();
+        if(data.streams && data.streams.length > 0) {
+          allLinks = data.streams.map(s => ({
+            label:   s.provider,
+            quality: s.quality,
+            url:     s.url,
+            direct:  s.direct,
+          }));
+        }
       }
-    }
-  } catch(e) {}
+    } catch(e) {}
+  }
 
-  try {
-    // ── vidbinge API — another direct stream source ──────────────────────────
-    const vbUrl = type === 'tv'
-      ? `https://vidbinge.dev/api/episode?imdbId=&tmdbId=${id}&season=${season}&episode=${episode}`
-      : `https://vidbinge.dev/api/movie?imdbId=&tmdbId=${id}`;
-    const vbRes = await fetch(vbUrl).catch(()=>null);
-    if(vbRes && vbRes.ok) {
-      const vbData = await vbRes.json().catch(()=>null);
-      if(vbData && vbData.stream) {
-        (vbData.stream.sources || []).forEach(s => {
-          allLinks.push({
-            label: 'VidBinge · ' + (s.quality||'Auto'),
-            quality: s.quality || 'Auto',
-            url: s.url,
-            direct: true
-          });
-        });
-      }
-    }
-  } catch(e) {}
-
-  // ── Fallback embed sources if direct APIs return nothing ─────────────────
+  // ── Fallback embed sources ───────────────────────────────────────────────
   const embedFallbacks = type === 'tv' ? [
-    { label:'VidSrc',      quality:'Auto',  url:`https://vidsrc.to/embed/tv/${id}/${season}/${episode}`,            direct:false },
-    { label:'VidSrc.me',   quality:'1080p', url:`https://vidsrc.me/embed/tv?tmdb=${id}&season=${season}&episode=${episode}`, direct:false },
-    { label:'SmashyStream',quality:'1080p', url:`https://player.smashy.stream/tv/${id}?s=${season}&e=${episode}`,  direct:false },
-    { label:'AutoEmbed',   quality:'Auto',  url:`https://autoembed.co/tv/tmdb/${id}-${season}-${episode}`,         direct:false },
-    { label:'EmbedSu',     quality:'720p',  url:`https://embed.su/embed/tv/${id}/${season}/${episode}`,            direct:false },
-    { label:'2Embed',      quality:'720p',  url:`https://www.2embed.cc/embedtv/${id}&s=${season}&e=${episode}`,    direct:false },
+    { label:'VidSrc',       quality:'Auto',  url:`https://vidsrc.to/embed/tv/${id}/${season}/${episode}`,                    direct:false },
+    { label:'VidSrc.me',    quality:'1080p', url:`https://vidsrc.me/embed/tv?tmdb=${id}&season=${season}&episode=${episode}`, direct:false },
+    { label:'SmashyStream', quality:'1080p', url:`https://player.smashy.stream/tv/${id}?s=${season}&e=${episode}`,           direct:false },
+    { label:'AutoEmbed',    quality:'Auto',  url:`https://autoembed.co/tv/tmdb/${id}-${season}-${episode}`,                  direct:false },
+    { label:'EmbedSu',      quality:'720p',  url:`https://embed.su/embed/tv/${id}/${season}/${episode}`,                     direct:false },
+    { label:'2Embed',       quality:'720p',  url:`https://www.2embed.cc/embedtv/${id}&s=${season}&e=${episode}`,             direct:false },
   ] : [
-    { label:'VidSrc',      quality:'Auto',  url:`https://vidsrc.to/embed/movie/${id}`,              direct:false },
-    { label:'VidSrc.me',   quality:'1080p', url:`https://vidsrc.me/embed/movie?tmdb=${id}`,         direct:false },
-    { label:'SmashyStream',quality:'1080p', url:`https://player.smashy.stream/movie/${id}`,         direct:false },
-    { label:'AutoEmbed',   quality:'Auto',  url:`https://autoembed.co/movie/tmdb/${id}`,            direct:false },
-    { label:'EmbedSu',     quality:'720p',  url:`https://embed.su/embed/movie/${id}`,               direct:false },
-    { label:'2Embed',      quality:'720p',  url:`https://www.2embed.cc/embed/${id}`,                direct:false },
-    { label:'rive',        quality:'1080p', url:`https://rivestream.live/embed?type=movie&id=${id}`,direct:false },
-    { label:'vidsrc.icu',  quality:'Auto',  url:`https://vidsrc.icu/embed/movie/${id}`,             direct:false },
+    { label:'VidSrc',       quality:'Auto',  url:`https://vidsrc.to/embed/movie/${id}`,              direct:false },
+    { label:'VidSrc.me',    quality:'1080p', url:`https://vidsrc.me/embed/movie?tmdb=${id}`,          direct:false },
+    { label:'SmashyStream', quality:'1080p', url:`https://player.smashy.stream/movie/${id}`,          direct:false },
+    { label:'AutoEmbed',    quality:'Auto',  url:`https://autoembed.co/movie/tmdb/${id}`,             direct:false },
+    { label:'EmbedSu',      quality:'720p',  url:`https://embed.su/embed/movie/${id}`,                direct:false },
+    { label:'2Embed',       quality:'720p',  url:`https://www.2embed.cc/embed/${id}`,                 direct:false },
+    { label:'Rive',         quality:'1080p', url:`https://rivestream.live/embed?type=movie&id=${id}`, direct:false },
+    { label:'vidsrc.icu',   quality:'Auto',  url:`https://vidsrc.icu/embed/movie/${id}`,              direct:false },
   ];
 
-  // Put direct streams first, then embeds
-  allLinks = [...allLinks, ...embedFallbacks];
+  // Add embeds that aren't already in the list
+  embedFallbacks.forEach(fb => {
+    if(!allLinks.find(l => l.label === fb.label)) allLinks.push(fb);
+  });
 
   if(!allLinks.length) {
     panel.innerHTML = '<div class="stream-loading">❌ No streams found</div>';
@@ -2287,12 +2268,13 @@ async function fetchStreamLinks(id, type, season, episode) {
   panel.innerHTML = allLinks.map((s, i) =>
     `<div class="stream-link-item ${i===0?'active-link':''}" onclick="playStreamLink(${i})">
       <span class="stream-quality">${s.quality}</span>
-      <span class="stream-provider">${s.label}${s.direct?' <span style=\"color:#4caf50;font-size:10px\">● Direct</span>':' <span style=\"color:#888;font-size:10px\">○ Embed</span>'}</span>
+      <span class="stream-provider">${s.label} ${s.direct
+        ? '<span style="color:#4caf50;font-size:10px">● Direct</span>'
+        : '<span style="color:#888;font-size:10px">○ Embed</span>'}</span>
       <span style="color:var(--text3);font-size:11px">▶</span>
     </div>`
   ).join('');
 
-  // Auto-play first link
   playStreamLink(0);
 }
 
